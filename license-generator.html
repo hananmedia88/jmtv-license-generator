@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jam Masjid TV - License Generator</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: #ffffff;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 600px;
+            width: 100%;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        h1 {
+            color: #4ecca3;
+            font-size: 32px;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        .subtitle {
+            color: #a0a0a0;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 16px;
+        }
+
+        .info-box {
+            background: rgba(78, 204, 163, 0.1);
+            border-left: 4px solid #4ecca3;
+            padding: 15px;
+            margin-bottom: 25px;
+            border-radius: 5px;
+        }
+
+        .info-box p {
+            color: #e0e0e0;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        label {
+            display: block;
+            color: #4ecca3;
+            font-weight: 600;
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(78, 204, 163, 0.3);
+            border-radius: 10px;
+            color: #ffffff;
+            font-size: 16px;
+            font-family: 'Courier New', monospace;
+            transition: all 0.3s ease;
+        }
+
+        input[type="text"]:focus {
+            outline: none;
+            border-color: #4ecca3;
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        input[type="text"]::placeholder {
+            color: #666;
+        }
+
+        button {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #4ecca3 0%, #3ba87f 100%);
+            border: none;
+            border-radius: 10px;
+            color: #1a1a2e;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(78, 204, 163, 0.4);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        .result-box {
+            margin-top: 30px;
+            padding: 20px;
+            background: rgba(78, 204, 163, 0.1);
+            border-radius: 10px;
+            border: 2px solid #4ecca3;
+            display: none;
+        }
+
+        .result-box.show {
+            display: block;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .result-label {
+            color: #4ecca3;
+            font-size: 14px;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .serial-display {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            margin-bottom: 15px;
+        }
+
+        .serial-number {
+            font-size: 28px;
+            font-weight: bold;
+            color: #4ecca3;
+            font-family: 'Courier New', monospace;
+            letter-spacing: 3px;
+            word-break: break-all;
+        }
+
+        .copy-btn {
+            width: auto;
+            padding: 10px 30px;
+            background: rgba(255, 255, 255, 0.1);
+            color: #ffffff;
+            font-size: 14px;
+            margin-top: 10px;
+        }
+
+        .copy-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .success-message {
+            color: #4ecca3;
+            text-align: center;
+            margin-top: 10px;
+            font-size: 14px;
+            display: none;
+        }
+
+        .success-message.show {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+            color: #666;
+            font-size: 12px;
+        }
+
+        .error {
+            color: #ff6b6b;
+            font-size: 14px;
+            margin-top: 5px;
+            display: none;
+        }
+
+        .error.show {
+            display: block;
+        }
+
+        .copy-device-btn {
+            width: auto;
+            padding: 8px 20px;
+            background: rgba(78, 204, 163, 0.2);
+            color: #4ecca3;
+            font-size: 13px;
+            margin-top: 8px;
+            border: 1px solid rgba(78, 204, 163, 0.3);
+        }
+
+        .copy-device-btn:hover {
+            background: rgba(78, 204, 163, 0.3);
+        }
+
+        .actions {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+            }
+
+            h1 {
+                font-size: 24px;
+            }
+
+            .serial-number {
+                font-size: 20px;
+                letter-spacing: 1px;
+            }
+
+            .deviceId {
+                font-size: 16px;
+                word-break: break-all;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🕌 JAM MASJID TV</h1>
+        <p class="subtitle">License Generator Offline</p>
+
+        <div class="info-box">
+            <p>
+                <strong>Cara Menggunakan:</strong><br>
+                1. Buka aplikasi Jam Masjid TV di device<br>
+                2. Salin Device ID yang ditampilkan<br>
+                3. Paste di form di bawah ini<br>
+                4. Klik Generate untuk mendapatkan Serial Number<br>
+                5. Masukkan Serial Number ke aplikasi untuk aktivasi
+            </p>
+        </div>
+
+        <div class="form-group">
+            <label for="deviceId">Device ID:</label>
+            <input 
+                type="text" 
+                id="deviceId" 
+                placeholder="Paste Device ID di sini..."
+                autocomplete="off"
+                spellcheck="false"
+            >
+            <span class="error" id="error">Device ID tidak boleh kosong</span>
+        </div>
+
+        <button onclick="generateSerial()">Generate Serial Number</button>
+
+        <div class="result-box" id="resultBox">
+            <div class="result-label">Serial Number Berhasil Dibuat:</div>
+            <div class="serial-display">
+                <div class="serial-number" id="serialNumber">-</div>
+            </div>
+            <div class="actions">
+                <button class="copy-btn" onclick="copySerial()">📋 Salin Serial</button>
+                <button class="copy-btn" onclick="downloadSerial()">💾 Download</button>
+            </div>
+            <div class="success-message" id="successMessage">✓ Serial number berhasil disalin!</div>
+        </div>
+
+        <div class="footer">
+            © 2026 Jam Masjid TV - License Generator v1.0<br>
+            Secret Key: JMTV_MOSQUE_CLOCK_2026_SECRET
+        </div>
+    </div>
+
+    <script>
+        // Configuration (same as app)
+        const SECRET_KEY = 'JMTV_MOSQUE_CLOCK_2026_SECRET';
+        const PREFIX = 'JMTV';
+
+        async function generateSerial() {
+            const deviceIdInput = document.getElementById('deviceId');
+            const deviceId = deviceIdInput.value.trim();
+            const errorElement = document.getElementById('error');
+            const resultBox = document.getElementById('resultBox');
+            
+            // Validation
+            if (!deviceId) {
+                errorElement.classList.add('show');
+                deviceIdInput.focus();
+                return;
+            }
+            
+            errorElement.classList.remove('show');
+            
+            try {
+                // Generate hash using Web Crypto API
+                const input = `${deviceId}-${SECRET_KEY}`;
+                const encoder = new TextEncoder();
+                const data = encoder.encode(input);
+                const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+                
+                // Convert to hex string
+                const hashArray = Array.from(new Uint8Array(hashBuffer));
+                const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+                
+                // Take first 12 characters and format
+                const code = hashHex.substring(0, 12).toUpperCase();
+                const serialNumber = `${PREFIX}-${code.substring(0, 4)}-${code.substring(4, 8)}-${code.substring(8, 12)}`;
+                
+                // Display result
+                document.getElementById('serialNumber').textContent = serialNumber;
+                resultBox.classList.add('show');
+                
+                // Scroll to result
+                resultBox.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                
+            } catch (error) {
+                alert('Error generating serial number: ' + error.message);
+            }
+        }
+
+        function copySerial() {
+            const serialNumber = document.getElementById('serialNumber').textContent;
+            const successMessage = document.getElementById('successMessage');
+            
+            copyToClipboard(serialNumber, successMessage, 'Serial number berhasil disalin!');
+        }
+
+        function downloadSerial() {
+            const serialNumber = document.getElementById('serialNumber').textContent;
+            const deviceId = document.getElementById('deviceId').value.trim();
+            
+            const content = `JAM MASJID TV - License Information\n` +
+                `======================================\n\n` +
+                `Device ID: ${deviceId}\n` +
+                `Serial Number: ${serialNumber}\n\n` +
+                `Generated: ${new Date().toLocaleString('id-ID')}\n\n` +
+                `Instruksi Aktivasi:\n` +
+                `1. Buka aplikasi Jam Masjid TV\n` +
+                `2. Masukkan Serial Number di atas\n` +
+                `3. Klik tombol AKTIVASI\n\n` +
+                `© 2026 Jam Masjid TV`;
+            
+            const blob = new Blob([content], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `JMTV-License-${deviceId.substring(0, 8)}.txt`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            
+            const successMessage = document.getElementById('successMessage');
+            successMessage.textContent = '✓ File license berhasil didownload!';
+            successMessage.classList.add('show');
+            setTimeout(() => {
+                successMessage.classList.remove('show');
+                successMessage.textContent = '✓ Serial number berhasil disalin!';
+            }, 2000);
+        }
+
+        function copyToClipboard(text, messageElement, message) {
+            navigator.clipboard.writeText(text).then(() => {
+                messageElement.textContent = message;
+                messageElement.classList.add('show');
+                setTimeout(() => {
+                    messageElement.classList.remove('show');
+                }, 2000);
+            }).catch(err => {
+                const tempInput = document.createElement('input');
+                tempInput.value = text;
+                document.body.appendChild(tempInput);
+                tempInput.select();
+                document.execCommand('copy');
+                document.body.removeChild(tempInput);
+                
+                messageElement.textContent = message;
+                messageElement.classList.add('show');
+                setTimeout(() => {
+                    messageElement.classList.remove('show');
+                }, 2000);
+            });
+        }
+
+        // Allow Enter key to generate
+        document.getElementById('deviceId').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                generateSerial();
+            }
+        });
+
+        // Clear error on input
+        document.getElementById('deviceId').addEventListener('input', function() {
+            document.getElementById('error').classList.remove('show');
+        });
+    </script>
+</body>
+</html>
